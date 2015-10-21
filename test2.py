@@ -2,6 +2,7 @@ import sklearn
 import pandas as pd
 import random
 import numpy as np
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble.forest import RandomForestClassifier
 from sklearn.metrics.classification import classification_report
 from sklearn.preprocessing import OneHotEncoder
@@ -101,11 +102,13 @@ test_features = test_set.ix[:, 'x0':'x61'].fillna(0).as_matrix()
 best_score = 0
 best_model = None
 
-for depth in [7, 10, 12, 15, 20, 30, 50, 70]:
+print("learning")
+
+for depth in [3, 5, 7, 10, 12, 15, 20, 30, 50, 70]:
     for leaf_samples in [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 20, 40, 60, 150]:
-        # model = GradientBoostingClassifier(n_estimators=10, max_depth=depth, min_samples_leaf=leaf_samples, verbose=1)
-        model = RandomForestClassifier(n_estimators=50, max_depth=depth, min_samples_leaf=leaf_samples, verbose=0,
-                                       n_jobs=4)
+        model = GradientBoostingClassifier(n_estimators=10, max_depth=depth, min_samples_leaf=leaf_samples, verbose=1)
+        # model = RandomForestClassifier(n_estimators=300, max_depth=depth, min_samples_leaf=leaf_samples, verbose=0,
+        #                                n_jobs=4)
         model.fit(trtrfe, trtrtrue)
         # mean accuracy on the given test data and labels
         predicted = model.predict(trtefe)
