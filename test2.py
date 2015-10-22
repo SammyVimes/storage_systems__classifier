@@ -1,3 +1,4 @@
+﻿ # -*- coding: utf-8 -*-
 import sklearn
 import pandas as pd
 import random
@@ -7,7 +8,8 @@ from sklearn.ensemble.forest import RandomForestClassifier
 from sklearn.metrics.classification import classification_report
 from sklearn.preprocessing import OneHotEncoder
 
-df = pd.read_csv("data/train.csv")
+print("reading")
+df = pd.read_csv("C:\\Users\\Семён\\PycharmProjects\\storage_systems__classifier\\data\\train.csv")
 # df.iloc[np.random.permutation(len(df))]
 df.reset_index(drop=True)
 
@@ -35,7 +37,7 @@ def build_col_dict(column, column2):
 mapped = []
 dicts = []
 
-test_set = pd.read_csv("data/test.csv")
+test_set = pd.read_csv("C:\\Users\\Семён\\PycharmProjects\\storage_systems__classifier\\data\\test.csv")
 test_set.reset_index(drop=True)
 cols = list(test_set.columns)
 cols[9] = "x21"
@@ -55,6 +57,7 @@ for col in range(columns):
 df.ix[:, 'x0':'x20'] = df_train
 
 
+print("encoding")
 enc = OneHotEncoder(categorical_features=range(20))
 matr = df.ix[:, 0:20].as_matrix()
 
@@ -104,9 +107,11 @@ best_model = None
 
 print("learning")
 
-for depth in [3, 5, 7, 10, 12, 15, 20, 30, 50, 70]:
-    for leaf_samples in [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 20, 40, 60, 150]:
-        model = GradientBoostingClassifier(n_estimators=10, max_depth=depth, min_samples_leaf=leaf_samples, verbose=1)
+# for depth in [3, 5, 7, 10, 12, 15, 20, 30, 50, 70]:
+#     for leaf_samples in [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 20, 40, 60, 150]:
+for depth in [70]:
+    for leaf_samples in [150]:
+        model = GradientBoostingClassifier(n_estimators=350, max_depth=depth, min_samples_leaf=leaf_samples, verbose=1)
         # model = RandomForestClassifier(n_estimators=300, max_depth=depth, min_samples_leaf=leaf_samples, verbose=0,
         #                                n_jobs=4)
         model.fit(trtrfe, trtrtrue)
@@ -126,4 +131,4 @@ res = {}
 res["y"] = predicted
 res["ID"] = [i for i in range(len(predicted))]
 result = pd.DataFrame(res)
-result.to_csv("data/sol.csv", columns = ['ID', 'y'], index=False)
+result.to_csv("C:\\Users\\Семён\\PycharmProjects\\storage_systems__classifier\\data\\sol.csv", columns = ['ID', 'y'], index=False)
