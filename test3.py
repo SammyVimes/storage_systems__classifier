@@ -2,9 +2,7 @@ import sklearn
 import pandas as pd
 import random
 import numpy as np
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble.forest import RandomForestClassifier
-from sklearn.metrics.classification import classification_report
+import xgboost as xgb
 from sklearn.preprocessing import OneHotEncoder
 
 df = pd.read_csv("data/train.csv")
@@ -107,23 +105,22 @@ print("learning")
 # for depth in [3, 5, 7, 10, 12, 15, 20, 30, 50, 70]:
 #     for leaf_samples in [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 20, 40, 60, 150]:
 
-for depth in [50, 70]:
-    for leaf_samples in [40, 60, 150]:
-        model = GradientBoostingClassifier(n_estimators=300, max_depth=depth, min_samples_leaf=leaf_samples, verbose=1)
-        # model = RandomForestClassifier(n_estimators=300, max_depth=depth, min_samples_leaf=leaf_samples, verbose=0,
-        #                                n_jobs=4)
-        model.fit(trtrfe, trtrtrue)
-        # mean accuracy on the given test data and labels
-        predicted = model.predict(trtefe)
-        score = model.score(trtefe, trtetrue)
-        if score > best_score:
-            best_model = model
-            best_score = score
-        print(depth, '\t', leaf_samples, '\t', score)
-        # print(classification_report(trtetrue, predicted))
-best_model.fit(trtefe, trtetrue)
+# for subsample in [1, 0.9, 0.8, 0.7, 0.6]:
+#     for colsample_bytree in [1, 0.9, 0.8, 0.7, 0.6]:
+#         model = xgb.XGBClassifier(max_depth=5, n_estimators=300, learning_rate=0.05, nthread=4, subsample=subsample, colsample_bytree=colsample_bytree)
+#         model.fit(trtrfe, trtrtrue)
+#         # mean accuracy on the given test data and labels
+#         predicted = model.predict(trtefe)
+#         score = model.score(trtefe, trtetrue)
+#         if score > best_score:
+#             best_model = model
+#             best_score = score
+#         print(subsample, '\t', colsample_bytree, '\t', score)
+#         # print(classification_report(trtetrue, predicted))
+# best_model.fit(trtefe, trtetrue)
 
-predicted = best_model.predict(test_features)
+model = xgb.XGBClassifier(max_depth=150, n_estimators=350, learning_rate=0.05, nthread=4, subsample=0.7, colsample_bytree=0.7).fit(train_features, train_true)
+predicted = model.predict(test_features)
 
 res = {}
 res["y"] = predicted
