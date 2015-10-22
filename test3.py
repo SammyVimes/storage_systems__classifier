@@ -119,7 +119,7 @@ print("learning")
 #         # print(classification_report(trtetrue, predicted))
 # best_model.fit(trtefe, trtetrue)
 
-model = xgb.XGBClassifier(max_depth=150, n_estimators=350, learning_rate=0.05, nthread=4, subsample=0.7, colsample_bytree=0.7).fit(train_features, train_true)
+model = xgb.XGBClassifier(max_depth=150, n_estimators=450, learning_rate=0.05, nthread=4, subsample=0.7, colsample_bytree=0.7).fit(train_features, train_true)
 predicted = model.predict(test_features)
 
 res = {}
