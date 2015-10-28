@@ -47,42 +47,42 @@ cols[23] = "x13"
 test_set = test_set[cols]
 
 test_set_to_encode = test_set.ix[:, 'x0':'x20'].as_matrix()
-
-for col in range(columns):
-    coldict = build_col_dict(df_train[:, col], test_set_to_encode[:, col])
-    newcolumn = [coldict[l] for l in df_train[:, col]]
-    mapped.append(coldict)
-    df_train[:, col] = newcolumn
-
-df.ix[:, 'x0':'x20'] = df_train
+#
+# for col in range(columns):
+#     coldict = build_col_dict(df_train[:, col], test_set_to_encode[:, col])
+#     newcolumn = [coldict[l] for l in df_train[:, col]]
+#     mapped.append(coldict)
+#     df_train[:, col] = newcolumn
+#
+# df.ix[:, 'x0':'x20'] = df_train
 
 
 print("encoding")
-enc = OneHotEncoder(categorical_features=range(20))
-matr = df.ix[:, 0:20].as_matrix()
+# enc = OneHotEncoder(categorical_features=range(20))
+# matr = df.ix[:, 0:20].as_matrix()
+#
+# rows, columns = test_set_to_encode.shape
+# for col in range(columns):
+#     coldict = mapped[col]
+#     newcolumn = [coldict[l] for l in test_set_to_encode[:, col]]
+#     test_set_to_encode[:, col] = newcolumn
+# test_set.ix[:, 'x0':'x20'] = test_set_to_encode
+# test_matr = test_set.ix[:, 'x0':'x20'].as_matrix()
+# ml = len(matr)
+#
+# matr = np.append(matr, test_matr, axis=1)
+#
+# newdf = enc.fit_transform(matr)
+#
+# mmm = {}
+# ndf = newdf.tocsr()
+# for i in range(newdf.shape[1]):
+#     mmm[str(i)] = ndf[:ml, i]
+#
+# df_cat = pd.DataFrame(mmm, index=[0])
+# df.ix[:, 0:20] = df_cat
 
-rows, columns = test_set_to_encode.shape
-for col in range(columns):
-    coldict = mapped[col]
-    newcolumn = [coldict[l] for l in test_set_to_encode[:, col]]
-    test_set_to_encode[:, col] = newcolumn
-test_set.ix[:, 'x0':'x20'] = test_set_to_encode
-test_matr = test_set.ix[:, 'x0':'x20'].as_matrix()
-ml = len(matr)
-
-matr = np.append(matr, test_matr, axis=1)
-
-newdf = enc.fit_transform(matr)
-
-mmm = {}
-ndf = newdf.tocsr()
-for i in range(newdf.shape[1]):
-    mmm[str(i)] = ndf[:ml, i]
-
-df_cat = pd.DataFrame(mmm, index=[0])
-df.ix[:, 0:20] = df_cat
-
-train_features = df.ix[:, 'x0':'x61'].fillna(0).as_matrix()
+train_features = df.ix[:, 'x29':'x61'].fillna(0).as_matrix()
 train_true = df['y'].tolist()
 
 trtrfe = train_features[:35000, :]
@@ -93,14 +93,14 @@ trtetrue = train_true[35000:]
 
 
 #encoding test set
-mmm = {}
-for i in range(newdf.shape[1]):
-    mmm[str(i)] = ndf[ml:, i]
+# mmm = {}
+# for i in range(newdf.shape[1]):
+#     mmm[str(i)] = ndf[ml:, i]
+#
+# df_cat = pd.DataFrame(mmm, index=[0])
+# test_set.ix[:, 'x0':'x20'] = df_cat
 
-df_cat = pd.DataFrame(mmm, index=[0])
-test_set.ix[:, 'x0':'x20'] = df_cat
-
-test_features = test_set.ix[:, 'x0':'x61'].fillna(0).as_matrix()
+test_features = test_set.ix[:, 'x29':'x61'].fillna(0).as_matrix()
 
 best_score = 0
 best_model = None
@@ -111,7 +111,7 @@ print("learning")
 #     for leaf_samples in [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 20, 40, 60, 150]:
 for depth in [70]:
     for leaf_samples in [150]:
-        model = GradientBoostingClassifier(n_estimators=350, max_depth=depth, min_samples_leaf=leaf_samples, verbose=1)
+        model = GradientBoostingClassifier(n_estimators=10, max_depth=depth, min_samples_leaf=leaf_samples, verbose=1)
         # model = RandomForestClassifier(n_estimators=300, max_depth=depth, min_samples_leaf=leaf_samples, verbose=0,
         #                                n_jobs=4)
         model.fit(trtrfe, trtrtrue)
