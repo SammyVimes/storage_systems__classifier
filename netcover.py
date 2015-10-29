@@ -14,6 +14,12 @@ from sklearn.metrics.classification import classification_report, confusion_matr
 from sklearn.neighbors.classification import KNeighborsClassifier
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing.imputation import Imputer
+
+import sys
+
+#хак для винды
+sys.path.append("C:\\myFiles\\builtdir\\xgboost\\python-package")
+
 import xgboost as xgb
 
 print("start")
@@ -183,7 +189,6 @@ for n_estimators in [100, 450, 550, 1000]:
     for subsample in [0.65, 0.7, 0.8, 1]:
         for depth in [10, 340, 500]:
             for learning_rate in [0.05, 0.005, 0.5, 0.8]:
-                # for learning_rate in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]:
                 print(learning_rate, depth, subsample,)
                 model = xgb.XGBClassifier(max_depth=depth, n_estimators=n_estimators, learning_rate=learning_rate,
                                           nthread=2, subsample=subsample, silent=True, colsample_bytree=0.8)
