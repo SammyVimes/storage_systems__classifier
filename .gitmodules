@@ -1,0 +1,3 @@
+[submodule "san_francisco_crimes"]
+	path = san_francisco_crimes
+	url = https://github.com/SammyVimes/san_francisco_crimes.git
